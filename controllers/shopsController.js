@@ -24,7 +24,7 @@ exports.createShop = async (req, res, next) => {
     }
     console.log(req.body);
     // req.body.shopId = req.shop.id;
-    const newShop = await Product.create(req.body);
+    const newShop = await Shop.create(req.body);
     res.status(201).json(newShop);
   } catch (error) {
     next(error);
