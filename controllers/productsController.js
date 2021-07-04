@@ -1,13 +1,19 @@
-const { Product } = require("../db/models");
+const { Product, Shop } = require("../db/models");
 
-exports.createProduct = async (req, res, next) => {
-  try {
-    const newProduct = await Product.create(req.body);
-    res.status(201).json(newProduct);
-  } catch (error) {
-    next(error);
-  }
-};
+// exports.createProduct = async (req, res, next) => {
+//   try {
+//     if (req.file) {
+//       req.body.imageUrl = `http://${req.get("host")}/media/${
+//         req.file.filename
+//       }`;
+//     }
+//     req.body.shopId = req.shop.id;
+//     const newProduct = await Product.create(req.body);
+//     res.status(201).json(newProduct);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 exports.fetchProduct = async (productId, next) => {
   try {
@@ -27,19 +33,24 @@ exports.deleteProduct = async (req, res, next) => {
   }
 };
 
-exports.getProducts = async (req, res) => {
+exports.getProducts = async (req, res, next) => {
   try {
     const products = await Product.findAll();
-    res.json(products);
+    res.status(200).json(products);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 exports.updateProducts = async (req, res, next) => {
   try {
+    if (req.file) {
+      req.body.imageUrl = `http://${req.get("host")}/media/${
+        req.file.filename
+      }`;
+    }
     await req.product.update(req.body);
-    res.status(204).end();
+    res.json(req.product);
   } catch (err) {
     next(err);
   }

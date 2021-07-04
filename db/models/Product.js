@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
   const Products = sequelize.define("Product", {
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     slug: {
       type: DataTypes.STRING,
